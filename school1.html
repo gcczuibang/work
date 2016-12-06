@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>1</title>
+    <link href="school-css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        form{
+            width: 80%;
+            margin: 10%;
+        }
+
+    </style>
+</head>
+<body>
+<h2 class="text-center">图书管理系统</h2>
+
+<form action="school2.html" id="form">
+    <div class="form-group has-feedback" id="usernameBox">
+        <label class="control-label" for="username" >user name</label>
+            <input  class="form-control" id="username" placeholder="usename">
+            <span class="glyphicon glyphicon-ok form-control-feedback  sr-only" id="a1"></span>
+        <span class="glyphicon glyphicon-remove form-control-feedback  sr-only" id="a2"></span>
+
+    </div>
+
+<div class="form-group has-feedback" id="pwdBox">
+    <label class="control-label" for="password" >password</label>
+        <input class="form-control" id="password" type="password" placeholder="password">
+        <span class="glyphicon glyphicon-ok form-control-feedback  sr-only" id="b1"></span>
+      <span class="glyphicon glyphicon-remove form-control-feedback  sr-only" id="b2"></span>
+
+</div>
+
+ <div class="form-group">
+     <button type="button" class="btn btn-primary" id="btnLogin">登录</button>
+     <!--<a href="" class="btn btn-primary btn-lg active" role="button" id="btnLogin">登录</a>-->
+
+ </div>
+
+</form>
+
+<script src="./school-js/jquery-3.1.0.js"></script>
+<script>
+    $(function(){
+
+        $("#username").blur(function(){
+            if($(this).val()!=="admin"){
+                $("#usernameBox").addClass("has-error");
+                $("#a2").removeClass("sr-only");
+                $("#a1").addClass("sr-only");
+            }else{
+                $("#usernameBox").removeClass("has-error");
+                $("#usernameBox").addClass("has-success has-feedback");
+                $("#a1").removeClass("sr-only");
+                $("#a2").addClass("sr-only");
+            }
+        });
+
+        $("#password").blur(function(){
+            if($(this).val()!=="admin"){
+                $("#pwdBox").addClass("has-error");
+                $("#b2").removeClass("sr-only");
+                $("#b1").addClass("sr-only");
+            }else{
+                $("#pwdBox").removeClass("has-error");
+                $("#pwdBox").addClass("has-success has-feedback");
+                $("#b1").removeClass("sr-only");
+                $("#b2").addClass("sr-only");
+            }
+        });
+
+        $("#btnLogin").click(function(){
+            if($("#username").val() == "admin" && $("#password").val() == "admin" ){
+//                $("#btnLogin").attr("href","2.html");
+                $("#form").submit();
+            }else if($("#username").val() != "admin" ){
+                $("#usernameBox").addClass("has-error");
+            }else if($("#password").val() != "admin" ){
+                $("#pwdBox").addClass("has-error");
+            }
+        });
+    });
+</script>
+</body>
+</html>
