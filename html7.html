@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>1</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+
+            color: white;
+            text-align: center;
+        }
+        #chat form {
+            background: #000;
+            padding: 3px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        #chat form input {
+            border: 0;
+            padding: 10px;
+            width: 90%;
+            margin-right: .5%;
+        }
+        #chat form button {
+            width: 9%;
+            background: rgb(130, 224, 255);
+            border: none;
+            padding: 10px;
+        }
+        #info ul{
+            float: left;
+
+        }
+        #info:after{
+            content: "";
+            display: table;
+            clear:both ;
+        }
+        #messages{
+            width: 80%;
+            height: calc(100vh - 41px);
+            background: #fff;
+        }
+        #users{
+            width: 20%;
+            height: 100vh;
+            background: #05ACCC;
+        }
+        #messages , #users{
+            list-style-type: none;
+            color: orange;
+            overflow: scroll;
+        }
+        #messages li {
+            padding: 5px 10px;
+        }
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+
+        #login {
+            background: #000;
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 99;
+            padding-top: 100px;
+        }
+        #login p,#login input{
+            font-size: 36px;
+
+        }
+
+        #login input{
+            outline: none;
+            background-color:#000;
+            color: white;
+            border-width: 0;
+            border-bottom: 3px solid white;
+            text-align: center;
+        }
+
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#example">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="" class="navbar-brand">顾晨臣的个人作品</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="example">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="q1 "><a href="index.html">返回</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<div id="chat">
+    <div id="info">
+        <ul id="messages">
+            <li>聊天记录</li>
+        </ul>
+        <ul id="users">
+
+
+        </ul>
+    </div>
+    <form action="" id="sendMsg">
+        <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+</div>
+<div id="login" id="login">
+    <p>What's your nickname</p>
+    <form action="" id="addUser">
+        <input type="text" id="nickname" name="nickname">
+    </form>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script>
+
+    var socket = io();
+    //向服务器发送websocket请求
+    $("#addUser").submit(function(){
+        $("#login").css('display','none');
+
+        socket.emit('login',{'username':$('#nickname').val()});
+        $('title').text($('#nickname').val());
+        $('#nickname').val('');
+        return false;
+    })
+
+    $('#sendMsg').submit(function(){
+        socket.emit('chat',$('#m').val());
+        $('#m').val('');
+        return false;
+    })
+
+    socket.on('new user',function(info){
+        $('#messages').append($('<li>').text('系统:'+info.news+"上线了"));
+
+        $('#users').html('');
+        $('#users').append($('<li>').text('在线人数:'+info.num));
+        info.users.forEach(function(username){
+            $('#users').append($('<li>').text(username));
+        })
+
+    })
+
+    socket.on('user left',function(info){
+        $('#messages').append($('<li>').text('系统:'+info.left+"下线了"));
+
+        $('#users').html('');
+        $('#users').append($('<li>').text('在线人数:'+info.num));
+        info.users.forEach(function(username){
+            $('#users').append($('<li>').text(username));
+        })
+    })
+
+    socket.on('chat',function(msg){
+        $('#messages').append($('<li>').text(msg.user+"说:"+msg.msg));
+        $('#messages').scrollTop($('#messages')[0].scrollHeight);
+    })
+
+</script>
+</body>
+</html>

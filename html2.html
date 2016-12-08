@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>1</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    <style>
+        .a{
+            width:300px;
+            height:300px;
+            background:orange;
+            position:absolute;
+            margin-top: 100px;
+        }
+        .b{
+            margin-top: 100px;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#example">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="" class="navbar-brand">顾晨臣的个人作品</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="example">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="q1 "><a href="index.html">返回</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+<form action="#" name="form" class="b">
+    <select name="province" >
+        <option value="js">江苏</option>
+        <option value="ah">安徽</option>
+        <option value="zj">浙江</option>
+    </select>
+    <select name="city" >
+        <option value="wx">无锡</option>
+        <option value="sz">苏州</option>
+        <option value="cz">常州</option>
+        <option value="tz">泰州</option>
+    </select>
+    <input type="submit">
+</form>
+<div class="a"></div>
+<script>
+    window.onload = function(){
+        var form = document.form;
+        var province = form.elements[0];
+        var city = form.elements[1];
+        var data =[
+            {
+                province:"江苏",
+                pcode:"js",
+                city:["无锡","苏州","常州","泰州"]
+            },
+            {
+                province:"安徽",
+                pcode:"ah",
+                city:["芜湖","合肥","安庆"]
+            },
+            {
+                province:"浙江",
+                pcode:"zj",
+                city:["宁波","杭州","温州","义乌"]
+            }
+        ];
+        province.onchange = function(){
+            //1、node节点操作
+            switch(this.value){
+                case "js":
+                    //   var p;
+                    //   data.forEach(function(x){
+                    //       if(x.pcode == "js"){
+                    //           p = x;
+                    //           return;
+                    //       }
+                    //   })
+                    var p = data[this.selectedIndex];
+                    city.innerHTML = "";//清空原来的数据
+                    var citys = p.city;//获取所有城市
+                    for(var i=0;i<citys.length;i++){
+                        var op = document.createElement("option");
+                        op.value = citys[i];
+                        var text = document.createTextNode(citys[i]);
+                        op.appendChild(text);
+                        city.appendChild(op);
+                    }
+
+                    break;
+                case "ah":
+                    //使用字符串
+                    console.log(data);
+                    var p;
+                    data.forEach(function(x){
+
+                        if(x.pcode == "ah"){
+                            p = x;
+                            return;
+                        }
+                    })
+
+                    var citys = p.city;
+                    var string = "";
+                    for(var i=0;i<citys.length;i++){
+                        var opstr = "<option value='"+citys[i]+"'>"+citys[i]+"</option>";
+                        string += opstr;
+                    }
+                    city.innerHTML = string;
+
+                    break;
+
+                case "zj":
+                    //使用创建对象
+                    var p;
+                    data.forEach(function(x){
+
+                        if(x.pcode == "zj"){
+                            p = x;
+                            return;
+                        }
+                    });
+                    var citys = p.city;
+                    city.innerHTML = "";
+                    for(var i=0;i<citys.length;i++){
+                        var op = new Option(citys[i],citys[i]);
+                        city.add(op);
+                    }
+                    break;
+            }
+        }
+        var div = document.querySelector(".a");
+        div.style.left = div.offsetLeft + "px";
+        div.style.top = div.offsetTop + "px";
+        div.onmousedown = function(e){
+            var ox = e.clientX;
+            var oy = e.clientY;
+            div.onmousemove = function(e){
+                var nx = e.clientX;
+                var ny = e.clientY;
+                var dx = nx - ox;
+                var dy = ny - oy;
+                console.log(dx,dy);
+                div.style.left = parseInt(div.style.left) + dx + "px";
+                div.style.top = parseInt(div.style.top) + dy + "px";
+                ox = nx;
+                oy = ny;
+            }
+        }
+
+        div.onmouseup = function(){
+            div.onmousemove = null;
+        }
+        document.onmouseup = function(){
+            div.onmousemove = null;
+        }
+    }
+</script>
+</body>
+</html>

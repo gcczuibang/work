@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>1</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <style>
+
+        body{
+            margin: 0;
+            background: #000;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#example">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="" class="navbar-brand">顾晨臣的个人作品</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="example">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="q1 "><a href="index.html">返回</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<script>
+    var cv = document.createElement("canvas"),
+            ctx = cv.getContext("2d"),
+            w = window.innerWidth,
+            h = window.innerHeight,
+            particles = [],
+            px = w/2,
+            py = h/2;
+
+    function init(){
+        document.body.appendChild(cv);
+        cv.width = w;
+        cv.height = h;
+        requestAnimationFrame(draw);
+    }
+
+    function Particle(x,y){
+        this.x = x;
+        this.y = y;
+        this.r = Math.random()*10;
+        this.vy = -5;
+        this.vx = Math.random()*4 - 2;
+//        this.gravity = 0.1;
+//        this.color = 'rgba(51,153,255,0.6)';
+        this.color = 'rgba('+Math.floor(Math.random()*255)+','+
+                Math.floor(Math.random()*255)+','+
+                Math.floor(Math.random()*255)+','+
+                Math.random()+')';
+    }
+    Particle.prototype.render = function(ctx){
+        ctx.save();
+        ctx.beginPath();
+        ctx.fillStyle = this.color;
+        ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+        ctx.fill();
+        ctx.restore();
+    }
+    Particle.prototype.update = function(){
+        this.y += this.vy;
+        this.x += this.vx;
+        this.vy *= 0.99;
+        this.vy += 0.25;
+        if(this.x+this.vx > w || this.x + this.vx < 0){
+            this.vx = -this.vx;
+        }
+        if(this.y+this.vy > h || this.y + this.vy < 0){
+            this.vy = -this.vy;
+        }
+    }
+
+    function draw(){
+        for(var i=0;i<5;i++){
+            var particle =  new Particle(px,py);
+            particles.push(particle);
+        }
+
+
+        ctx.clearRect(0,0,w,h);
+        var len = particles.length;
+
+        for(var i=0;i<len;i++){
+            particles[i].update();
+            particles[i].render(ctx);
+        }
+
+        if(len>=1000){
+            for(var i=0;i<5;i++){
+                particles.shift();
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+
+    cv.onmousemove = function(e){
+        px = e.clientX;
+        py = e.clientY;
+    }
+    init();
+</script>
+</body>
+</html>

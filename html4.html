@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>1</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <style>
+        .a{margin:0px auto;
+            margin-top: 100px;
+            margin-left: 400px;
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#example">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="" class="navbar-brand">顾晨臣的个人作品</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="example">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="q1 "><a href="index.html">返回</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<div class="a">
+    <canvas id="cv" width="500" height="350"></canvas></div>
+
+<div class="b">
+
+</div>
+    <script>
+        var canvas = document.getElementById("cv");
+        var ctx = canvas.getContext("2d");
+        var w = canvas.width,
+                h = canvas.height;
+
+        var ball = {
+            x:100,
+            y:100,
+            r:20,
+            vx:5,
+            vy:5,
+            color:'white',
+            render:function(ctx){
+                ctx.save();
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+                ctx.fill();
+                ctx.restore();
+            }
+        };
+
+        function animate(){
+//        ctx.clearRect(0,0,w,h);
+            ctx.save();
+            ctx.fillStyle = 'rgba(0,0,0,0.3)';
+            ctx.fillRect(0,0,w,h);
+//        把球经过的路径填充掉变成背景色
+            ctx.restore();
+            ball.x += ball.vx;
+            ball.y += ball.vy;
+            ball.vy *= 0.99;
+            ball.vy += 0.25;
+            if(ball.x+ball.vx > w || ball.x + ball.vx < 0){
+                ball.vx = -ball.vx;
+            }
+            if(ball.y+ball.vy > h || ball.y + ball.vy < 0){
+                ball.vy = -ball.vy;
+            }
+            ball.render(ctx);
+            requestAnimationFrame(animate);
+        }
+
+        //    ball.render(ctx);
+        var cv1 = document.createElement("canvas");
+        var ctx1 = cv1.getContext("2d");
+        var w1 = canvas.width;
+        var h1 = canvas.height;
+        var sun = new Image(),
+                earth = new Image(),
+                moon = new Image();
+
+        function loadImages(){
+            sun.src = "img/earth/Canvas_sun.png";
+            earth.src = "img/earth/Canvas_earth.png";
+            moon.src = "img/earth/Canvas_moon.png";
+        }
+
+        function init(){
+            document.body.appendChild(cv1);
+            cv1.width = w1;
+            cv1.height = h1;
+            loadImages();
+        }
+
+        function draw(){
+            ctx1.clearRect(0,0,w1,h1);
+            ctx1.globalCompositeOperation = "destination-over";
+            ctx1.save();
+            ctx1.translate(150,150);
+            var date = new Date();
+            ctx1.rotate(Math.PI*2/60*date.getSeconds()+Math.PI*2/60000*date.getMilliseconds());
+            ctx1.translate(105,0);
+            ctx1.drawImage(earth,-12,-12);
+
+            ctx1.rotate(Math.PI*2/10 * date.getSeconds() + Math.PI*2/10000*date.getMilliseconds());
+            ctx1.translate(25,0);
+            ctx1.drawImage(moon,-4,-4);
+            ctx1.restore();
+
+            ctx1.drawImage(sun,0,0);
+            requestAnimationFrame(draw);
+        }
+        requestAnimationFrame(draw);
+        init();
+        requestAnimationFrame(animate);
+    </script>
+
+
+</body>
+</html>

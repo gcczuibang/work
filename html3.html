@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>1</title>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <style>
+        .a{
+            margin-top: 100px;
+            margin-left:300px;
+            width:610px;
+            height:410px;
+        }
+
+         body {
+             background: #eeeeee;
+         }
+
+        #controls {
+            margin-top: 100px;
+            margin-left:350px;
+            position: absolute;
+            left: 25px;
+            top: 25px;
+        }
+
+        #canvas {
+
+            background: #ffffff;
+            cursor: pointer;
+            margin-left: 10px;
+            margin-top: 10px;
+            -webkit-box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+            -moz-box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+            box-shadow: 4px 4px 8px rgba(0,0,0,0.5);
+        }
+    </style>
+
+</head>
+<body>
+<nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#example">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="" class="navbar-brand">顾晨臣的个人作品</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="example">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="q1 "><a href="index.html">返回</a></li>
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<div class="a">
+    <canvas id='canvas' width='600' height='400'>
+        Canvas not supported
+    </canvas>
+
+    <div id='controls'>
+        Stroke color: <select id='strokeStyleSelect'>
+        <option value='red'>red</option>
+        <option value='green'>green</option>
+        <option value='blue'>blue</option>
+        <option value='orange'>orange</option>
+        <option value='cornflowerblue' selected>cornflowerblue</option>
+        <option value='goldenrod'>goldenrod</option>
+        <option value='navy'>navy</option>
+        <option value='purple'>purple</option>
+    </select>
+        shape: <select id='shape'>
+        <option value='rect'>rect</option>
+        <option value='circle'>circle</option>
+        <option value='roundRect'>roundRect</option>
+        <option value='line' selected>line</option>
+        <option value='bezirLine'>bezirLine</option>
+        <option value='custom'>custom</option>
+        <option value='text'>text</option>
+        <option value='erase'>erase</option>
+    </select>
+        <input id='eraseAllButton' type='button' value='Erase all'/>
+    </div>
+</div>
+<script src = 'js/draw.js'></script>
+</body>
+</html>
